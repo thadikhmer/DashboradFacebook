@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Facebook Create Dashboard</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Khmer:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#07111f;
+      --card:rgba(16,28,54,.88);
+      --line:rgba(255,255,255,.08);
+      --text:#eef4ff;
+      --muted:#9fb0d0;
+      --primary:#5fa8ff;
+      --primary2:#7e63ff;
+      --success:#22c55e;
+      --success-bg:rgba(34,197,94,.10);
+      --shadow:0 16px 40px rgba(0,0,0,.24);
+      --radius-xl:24px;
+      --radius-lg:18px;
+      --radius-md:14px;
+    }
+
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:"Inter","Noto Sans Khmer",sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(95,168,255,.16), transparent 24%),
+        radial-gradient(circle at top right, rgba(126,99,255,.18), transparent 26%),
+        linear-gradient(180deg, #07111f 0%, #081326 48%, #09111f 100%);
+      color:var(--text);
+      min-height:100vh;
+      line-height:1.5;
+      padding:20px;
+    }
+
+    .container{
+      max-width:1440px;
+      margin:0 auto;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:22px;
+      flex-wrap:wrap;
+    }
+
+    .title-wrap h1{
+      font-family:"Noto Sans Khmer","Inter",sans-serif;
+      font-size:clamp(28px, 4vw, 50px);
+      font-weight:800;
+      line-height:1.22;
+      margin-bottom:8px;
+    }
+
+    .title-wrap p{
+      color:var(--muted);
+      font-size:15px;
+      font-family:"Noto Sans Khmer","Inter",sans-serif;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:12px 16px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      box-shadow:var(--shadow);
+      color:#dbe8ff;
+      font-weight:600;
+      white-space:nowrap;
+      font-family:"Noto Sans Khmer","Inter",sans-serif;
+    }
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(4, 1fr);
+      gap:18px;
+      margin-bottom:22px;
+    }
+
+    .card{
+      position:relative;
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid var(--line);
+      border-radius:var(--radius-xl);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(10px);
+    }
+
+    .stat-card{
+      padding:22px;
+      min-height:150px;
+      overflow:hidden;
+    }
+
+    .stat-card::after{
+      content:"";
+      position:absolute;
+      top:-26px;
+      right:-16px;
+      width:120px;
+      height:120px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(126,99,255,.28), rgba(95,168,255,.08), transparent 70%);
+      filter:blur(6px);
+      pointer-events:none;
+    }
+
+    .stat-label{
+      color:var(--muted);
+      font-size:15px;
+      margin-bottom:12px;
+      font-family:"Noto Sans Khmer","Inter",sans-serif;
+    }
+
+    .stat-value{
+      font-size:clamp(30px, 4vw, 44px);
+      line-height:1.15;
+      font-weight:800;
+      word-break:break-word;
+    }
+
+    .stat-value.date-fit{
+      font-size:clamp(22px, 2.4vw, 34px);
+    }
+
+    .stat-sub{
+      margin-top:10px;
+      color:#d9e4fb;
+      font-size:14px;
+      font-family:"Noto Sans Khmer","Inter",sans-serif;
+    }
+
+    .content-grid{
+      display:grid;
+      grid-template-columns:360px minmax(0, 1fr);
+      gap:22px;
+      align-items:start;
+    }
+
+    .filter-card,
+    .table-card{
+      padding:22px;
+    }
+
+    .section-title{
+      font-size:18px;
+      font-weight:800;
+      margin-bottom:16px;
+      font-family:"Noto Sans Khmer","Inter",sans-serif;
+    }
+
+    .field{
+      margin-bottom:16px;
+    }
+
+    .field label{
+      display:block;
+      margin-bottom:8px;
+      font-size:14px;
+      font-weight:700;
+      color:#dce8ff;
+      font-family:"Noto Sans Khmer","Inter",sans-serif;
+    }
+
+    .input{
+      width:100%;
+      border:none;
+      outline:none;
+      background:#18284e;
+      border:1px solid rgba(255,255,255,.07);
+      border-radius:16px;
+      color:var(--text);
+      padding:14px 14px;
+      font-size:15px;
+      font-family:"Noto Sans Khmer","Inter",sans-serif;
+      transition:.2s ease;
+    }
+
+    .input:focus{
+      border-color:rgba(95,168,255,.6);
+      box-shadow:0 0 0 4px rgba(95,168,255,.10);
+    }
+
+    .input::placeholder{
+      color:#95a9cd;
+    }
+
+    .btn-group{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:8px;
+    }
+
+    .btn{
+      border:none;
+      outline:none;
+      cursor:pointer;
+      border-radius:16px;
+      padding:14px 14px;
+      font-size:15px;
+      font-weight:800;
+      font-family:"Noto Sans Khmer","Inter",sans-serif;
+      transition:.22s ease;
+    }
+
+    .btn:hover{
+      transform:translateY(-1px);
+    }
+
+    .btn-primary{
+      color:white;
+      background:linear-gradient(135deg, var(--primary), var(--primary2));
+      box-shadow:0 10px 22px rgba(95,168,255,.18);
+    }
+
+    .btn-secondary{
+      color:white;
+      background:rgba(255,255,255,.06);
+      border:1px solid var(--line);
+    }
+
+    .btn-print{
+      color:white;
+      background:linear-gradient(135deg, #10b981, #0ea5e9);
+      box-shadow:0 10px 22px rgba(16,185,129,.18);
+    }
+
+    .helper-box{
+      margin-top:18px;
+      padding:16px;
+      border-radius:18px;
+      background:rgba(95,168,255,.08);
+      border:1px solid rgba(95,168,255,.16);
+    }
+
+    .helper-box h4{
+      margin-bottom:8px;
+      font-size:15px;
+      font-weight:800;
+      font-family:"Noto Sans Khmer","Inter",sans-serif;
+    }
+
+    .helper-box ul{
+      padding-left:18px;
+      color:#dbe7ff;
+      font-size:14px;
+      font-family:"Noto Sans Khmer","Inter",sans-serif;
+    }
+
+    .table-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:14px;
+      flex-wrap:wrap;
+    }
+
+    .table-sub{
+      color:var(--muted);
+      font-size:14px;
+      font-family:"Noto Sans Khmer","Inter",sans-serif;
+    }
+
+    .table-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .mini-btn{
+      border:none;
+      cursor:pointer;
+      padding:11px 16px;
+      border-radius:14px;
+      font-size:14px;
+      font-weight:800;
+      font-family:"Noto Sans Khmer","Inter",sans-serif;
+      color:white;
+      background:rgba(255,255,255,.06);
+      border:1px solid var(--line);
+    }
+
+    .mini-btn.print{
+      background:linear-gradient(135deg, #10b981, #0ea5e9);
+      border:none;
+    }
+
+    .table-wrap{
+      overflow-x:auto;
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:rgba(255,255,255,.02);
+    }
+
+    table{
+      width:100%;
+      min-width:950px;
+      border-collapse:separate;
+      border-spacing:0;
+      table-layout:fixed;
+    }
+
+    col.col-no{ width:70px; }
+    col.col-name{ width:34%; }
+    col.col-pass{ width:22%; }
+    col.col-link{ width:18%; }
+    col.col-date{ width:18%; }
+
+    thead th{
+      position:sticky;
+      top:0;
+      z-index:2;
+      background:rgba(255,255,255,.06);
+      color:#dce8ff;
+      padding:16px 14px;
+      font-size:14px;
+      font-weight:800;
+      font-family:"Noto Sans Khmer","Inter",sans-serif;
+      border-bottom:1px solid rgba(255,255,255,.06);
+      text-align:center;
+      vertical-align:middle;
+      white-space:nowrap;
+    }
+
+    thead th:first-child{
+      border-top-left-radius:18px;
+    }
+
+    thead th:last-child{
+      border-top-right-radius:18px;
+    }
+
+    tbody td{
+      padding:16px 14px;
+      border-bottom:1px solid rgba(255,255,255,.06);
+      font-size:14px;
+      color:#edf4ff;
+      vertical-align:middle;
+      text-align:center;
+      font-family:"Noto Sans Khmer","Inter",sans-serif;
+    }
+
+    tbody tr:hover{
+      background:rgba(255,255,255,.03);
+    }
+
+    tbody tr:last-child td{
+      border-bottom:none;
+    }
+
+    .name-cell{
+      text-align:left;
+      font-weight:700;
+      white-space:normal;
+      word-break:break-word;
+    }
+
+    .password-cell{
+      font-weight:700;
+      color:#ffdca8;
+      font-family:"Inter","Noto Sans Khmer",sans-serif;
+      word-break:break-word;
+    }
+
+    .link-cell{
+      text-align:center;
+    }
+
+    .date-cell{
+      text-align:center;
+    }
+
+    .date-pill{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:110px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:var(--success-bg);
+      color:#b7f5c8;
+      border:1px solid rgba(34,197,94,.18);
+      font-size:12px;
+      font-weight:800;
+    }
+
+    .link-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:84px;
+      padding:9px 16px;
+      border-radius:999px;
+      text-decoration:none;
+      color:white;
+      font-size:13px;
+      font-weight:800;
+      background:linear-gradient(135deg, #3b82f6, #7c3aed);
+      box-shadow:0 8px 18px rgba(59,130,246,.20);
+      transition:.2s ease;
+    }
+
+    .link-btn:hover{
+      transform:translateY(-1px);
+      opacity:.96;
+    }
+
+    .empty,
+    .loading{
+      padding:42px 18px;
+      text-align:center;
+      color:var(--muted);
+      font-size:15px;
+      font-family:"Noto Sans Khmer","Inter",sans-serif;
+    }
+
+    .mobile-cards{
+      display:none;
+    }
+
+    .record-card{
+      background:rgba(255,255,255,.03);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:16px;
+      margin-bottom:12px;
+    }
+
+    .record-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:12px;
+    }
+
+    .record-index{
+      width:34px;
+      height:34px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:12px;
+      background:rgba(95,168,255,.12);
+      color:#dce8ff;
+      font-weight:800;
+      font-size:13px;
+    }
+
+    .record-name{
+      font-size:16px;
+      font-weight:800;
+      line-height:1.4;
+      font-family:"Noto Sans Khmer","Inter",sans-serif;
+    }
+
+    .record-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-top:10px;
+    }
+
+    .mini-box{
+      background:#15264a;
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:14px;
+      padding:12px;
+    }
+
+    .mini-label{
+      color:var(--muted);
+      font-size:12px;
+      margin-bottom:6px;
+      font-weight:700;
+      font-family:"Noto Sans Khmer","Inter",sans-serif;
+    }
+
+    .mini-value{
+      color:#f3f7ff;
+      font-size:14px;
+      font-weight:700;
+      word-break:break-word;
+      font-family:"Noto Sans Khmer","Inter",sans-serif;
+    }
+
+    .record-actions{
+      margin-top:12px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .print-header{
+      display:none;
+    }
+
+    @media (max-width:1200px){
+      .stats{
+        grid-template-columns:repeat(2, 1fr);
+      }
+
+      .content-grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width:768px){
+      body{
+        padding:14px;
+      }
+
+      .title-wrap h1{
+        font-size:32px;
+      }
+
+      .title-wrap p{
+        font-size:14px;
+      }
+
+      .badge{
+        width:100%;
+        justify-content:center;
+      }
+
+      .stats{
+        grid-template-columns:1fr;
+        gap:14px;
+      }
+
+      .stat-card,
+      .filter-card,
+      .table-card{
+        padding:18px;
+      }
+
+      .btn-group{
+        grid-template-columns:1fr;
+      }
+
+      .table-wrap{
+        display:none;
+      }
+
+      .mobile-cards{
+        display:block;
+      }
+    }
+
+    @media (max-width:480px){
+      .title-wrap h1{
+        font-size:28px;
+      }
+
+      .stat-value{
+        font-size:32px;
+      }
+
+      .stat-value.date-fit{
+        font-size:22px;
+      }
+
+      .section-title{
+        font-size:17px;
+      }
+
+      .input, .btn{
+        font-size:14px;
+      }
+    }
+
+    @media print{
+      @page{
+        size:A4 portrait;
+        margin:12mm;
+      }
+
+      body{
+        background:#fff !important;
+        color:#000 !important;
+        padding:0;
+      }
+
+      .topbar,
+      .stats,
+      .filter-card,
+      .table-actions,
+      .mobile-cards{
+        display:none !important;
+      }
+
+      .container{
+        max-width:100%;
+      }
+
+      .content-grid{
+        display:block;
+      }
+
+      .table-card,
+      .card{
+        background:#fff !important;
+        border:none !important;
+        box-shadow:none !important;
+        padding:0 !important;
+      }
+
+      .print-header{
+        display:block;
+        margin-bottom:12px;
+      }
+
+      .print-header h2{
+        font-family:"Noto Sans Khmer","Inter",sans-serif;
+        font-size:22px;
+        margin-bottom:6px;
+      }
+
+      .print-header p{
+        font-family:"Noto Sans Khmer","Inter",sans-serif;
+        font-size:12px;
+        color:#222;
+      }
+
+      .table-wrap{
+        display:block !important;
+        overflow:visible !important;
+        border:none !important;
+        border-radius:0 !important;
+        background:#fff !important;
+      }
+
+      table{
+        width:100% !important;
+        min-width:100% !important;
+        border-collapse:collapse !important;
+        table-layout:fixed !important;
+      }
+
+      col.col-no{ width:8% !important; }
+      col.col-name{ width:36% !important; }
+      col.col-pass{ width:22% !important; }
+      col.col-link{ width:16% !important; }
+      col.col-date{ width:18% !important; }
+
+      thead th,
+      tbody td{
+        border:1px solid #999 !important;
+        background:#fff !important;
+        color:#000 !important;
+        padding:8px 6px !important;
+        font-size:11px !important;
+        text-align:center !important;
+        vertical-align:middle !important;
+      }
+
+      .name-cell{
+        text-align:left !important;
+        word-break:break-word !important;
+      }
+
+      .password-cell{
+        color:#000 !important;
+      }
+
+      .link-btn{
+        background:none !important;
+        color:#000 !important;
+        border:none !important;
+        box-shadow:none !important;
+        padding:0 !important;
+        min-width:auto !important;
+        text-decoration:underline !important;
+      }
+
+      .date-pill{
+        background:none !important;
+        color:#000 !important;
+        border:none !important;
+        min-width:auto !important;
+        padding:0 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="topbar">
+      <div class="title-wrap">
+        <h1>Dashboard ទិន្នន័យ Create Facebook</h1>
+        <p>បង្ហាញទិន្នន័យពី Google Sheet • បើកដំបូងបង្ហាញ Today</p>
+      </div>
+      <div class="badge" id="todayBadge">កំពុងផ្ទុកថ្ងៃ...</div>
+    </div>
+
+    <section class="stats">
+      <div class="card stat-card">
+        <div class="stat-label">សរុបអ្នកបាន Create</div>
+        <div class="stat-value" id="totalAll">0</div>
+        <div class="stat-sub">គិតពីទិន្នន័យទាំងអស់</div>
+      </div>
+
+      <div class="card stat-card">
+        <div class="stat-label">ចំនួនតាមថ្ងៃដែលជ្រើស</div>
+        <div class="stat-value" id="totalByDate">0</div>
+        <div class="stat-sub">បង្ហាញតាមថ្ងៃ filter</div>
+      </div>
+
+      <div class="card stat-card">
+        <div class="stat-label">ថ្ងៃកំពុងមើល</div>
+        <div class="stat-value date-fit" id="selectedDateText">Today</div>
+        <div class="stat-sub">Default ពេលបើកដំបូង</div>
+      </div>
+
+      <div class="card stat-card">
+        <div class="stat-label">ចំនួនលទ្ធផលស្វែងរក</div>
+        <div class="stat-value" id="searchCount">0</div>
+        <div class="stat-sub">បន្ទាប់ពី filter + search</div>
+      </div>
+    </section>
+
+    <section class="content-grid">
+      <div class="card filter-card">
+        <div class="section-title">Filter & Search</div>
+
+        <div class="field">
+          <label for="dateFilter">ជ្រើសថ្ងៃ</label>
+          <input type="date" id="dateFilter" class="input">
+        </div>
+
+        <div class="field">
+          <label for="searchInput">ស្វែងរកតាមឈ្មោះ</label>
+          <input type="text" id="searchInput" class="input" placeholder="វាយឈ្មោះដើម្បីស្វែងរក...">
+        </div>
+
+        <div class="btn-group">
+          <button class="btn btn-primary" id="todayBtn">មើល Today</button>
+          <button class="btn btn-secondary" id="resetBtn">បង្ហាញទាំងអស់</button>
+          <button class="btn btn-print" id="printBtn" style="grid-column:1 / -1;">Print Report PDF</button>
+        </div>
+
+        <div class="helper-box">
+          <h4>Columns ប្រើប្រាស់</h4>
+          <ul>
+            <li>ឈ្មោះ = Column A</li>
+            <li>Password = Column E</li>
+            <li>Facebook Link = Column G</li>
+            <li>ថ្ងៃបង្កើត = Column H</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card table-card">
+        <div class="print-header" id="printHeader">
+          <h2>Facebook Create Report</h2>
+          <p id="printInfo">Report</p>
+        </div>
+
+        <div class="table-head">
+          <div>
+            <div class="section-title" style="margin-bottom:4px;">បញ្ជីទិន្នន័យ</div>
+            <div class="table-sub" id="tableCountText">0 records</div>
+          </div>
+
+          <div class="table-actions">
+            <button class="mini-btn print" id="printBtnTop">Print Report PDF</button>
+          </div>
+        </div>
+
+        <div id="tableContent" class="loading">កំពុងទាញទិន្នន័យពី Google Sheet...</div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const SHEET_ID = "1uRdmKtVC8HOYQryy7Jbjie88tkKZRU3YmrXhdPt2U7U";
+    const SHEET_NAME = "DATA";
+    const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SHEET_NAME)}&tqx=out:json`;
+
+    let allData = [];
+    let filteredData = [];
+
+    const totalAllEl = document.getElementById("totalAll");
+    const totalByDateEl = document.getElementById("totalByDate");
+    const selectedDateTextEl = document.getElementById("selectedDateText");
+    const searchCountEl = document.getElementById("searchCount");
+    const dateFilterEl = document.getElementById("dateFilter");
+    const searchInputEl = document.getElementById("searchInput");
+    const todayBtnEl = document.getElementById("todayBtn");
+    const resetBtnEl = document.getElementById("resetBtn");
+    const printBtnEl = document.getElementById("printBtn");
+    const printBtnTopEl = document.getElementById("printBtnTop");
+    const tableContentEl = document.getElementById("tableContent");
+    const tableCountTextEl = document.getElementById("tableCountText");
+    const todayBadgeEl = document.getElementById("todayBadge");
+    const printInfoEl = document.getElementById("printInfo");
+
+    function pad(num) {
+      return String(num).padStart(2, "0");
+    }
+
+    function getTodayLocal() {
+      const now = new Date();
+      return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+    }
+
+    function formatDisplayDate(yyyyMmDd) {
+      if (!yyyyMmDd) return "ទាំងអស់";
+      const [y, m, d] = yyyyMmDd.split("-");
+      return `${d}/${m}/${y}`;
+    }
+
+    function escapeHtml(text = "") {
+      return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function normalizeDate(value) {
+      if (!value) return "";
+
+      const gvizMatch = String(value).match(/Date\((\d+),(\d+),(\d+)\)/);
+      if (gvizMatch) {
+        const year = Number(gvizMatch[1]);
+        const month = Number(gvizMatch[2]) + 1;
+        const day = Number(gvizMatch[3]);
+        return `${year}-${pad(month)}-${pad(day)}`;
+      }
+
+      const str = String(value).trim();
+
+      if (/^\d{4}-\d{2}-\d{2}$/.test(str)) return str;
+
+      if (/^\d{2}-\d{2}-\d{2}$/.test(str)) {
+        const [dd, mm, yy] = str.split("-");
+        return `20${yy}-${mm}-${dd}`;
+      }
+
+      if (/^\d{2}\/\d{2}\/\d{4}$/.test(str)) {
+        const [dd, mm, yyyy] = str.split("/");
+        return `${yyyy}-${mm}-${dd}`;
+      }
+
+      const parsed = new Date(str);
+      if (!isNaN(parsed.getTime())) {
+        return `${parsed.getFullYear()}-${pad(parsed.getMonth() + 1)}-${pad(parsed.getDate())}`;
+      }
+
+      return "";
+    }
+
+    function parseGvizResponse(text) {
+      const start = text.indexOf("{");
+      const end = text.lastIndexOf("}");
+      const jsonText = text.substring(start, end + 1);
+      return JSON.parse(jsonText);
+    }
+
+    function getCellValue(row, index) {
+      return row?.c?.[index]?.v ?? "";
+    }
+
+    async function loadSheetData() {
+      try {
+        const res = await fetch(SHEET_URL);
+        const text = await res.text();
+        const json = parseGvizResponse(text);
+        const rows = json.table.rows || [];
+
+        allData = rows.map((row) => {
+          const name = String(getCellValue(row, 0) || "").trim();      // A
+          const password = String(getCellValue(row, 4) || "").trim();  // E
+          const fbLink = String(getCellValue(row, 6) || "").trim();    // G
+          const rawDate = getCellValue(row, 7);                        // H
+          const createdDate = normalizeDate(rawDate);
+
+          return { name, password, fbLink, createdDate };
+        })
+        .filter(item => item.name || item.password || item.fbLink || item.createdDate)
+        .filter(item => item.name && item.createdDate);
+
+        totalAllEl.textContent = allData.length.toLocaleString();
+        initDefaultToday();
+        applyFilters();
+      } catch (error) {
+        console.error("Load sheet error:", error);
+        tableContentEl.innerHTML = `
+          <div class="empty">
+            មិនអាចទាញទិន្នន័យពី Google Sheet បានទេ។<br><br>
+            សូមពិនិត្យថា Sheet បាន Share ជា Public រួចហើយ។
+          </div>
+        `;
+      }
+    }
+
+    function initDefaultToday() {
+      const today = getTodayLocal();
+      dateFilterEl.value = today;
+      todayBadgeEl.textContent = `Today: ${formatDisplayDate(today)}`;
+      selectedDateTextEl.textContent = "Today";
+    }
+
+    function updatePrintInfo(selectedDate, totalRecords) {
+      const today = new Date();
+      const printedAt = `${pad(today.getDate())}/${pad(today.getMonth() + 1)}/${today.getFullYear()} ${pad(today.getHours())}:${pad(today.getMinutes())}`;
+      const viewedDate = selectedDate ? formatDisplayDate(selectedDate) : "ទាំងអស់";
+      printInfoEl.textContent = `ថ្ងៃរបាយការណ៍: ${viewedDate} | ចំនួនទិន្នន័យ: ${totalRecords} | Printed: ${printedAt}`;
+    }
+
+    function applyFilters() {
+      const selectedDate = dateFilterEl.value.trim();
+      const keyword = searchInputEl.value.trim().toLowerCase();
+
+      let byDate = [...allData];
+
+      if (selectedDate) {
+        byDate = byDate.filter(item => item.createdDate === selectedDate);
+      }
+
+      totalByDateEl.textContent = byDate.length.toLocaleString();
+
+      filteredData = byDate.filter(item => item.name.toLowerCase().includes(keyword));
+
+      searchCountEl.textContent = filteredData.length.toLocaleString();
+      selectedDateTextEl.textContent = selectedDate ? formatDisplayDate(selectedDate) : "ទាំងអស់";
+      tableCountTextEl.textContent = `${filteredData.length.toLocaleString()} records`;
+      updatePrintInfo(selectedDate, filteredData.length);
+
+      renderData(filteredData);
+    }
+
+    function renderData(data) {
+      if (!data.length) {
+        tableContentEl.innerHTML = `
+          <div class="empty">
+            មិនមានទិន្នន័យសម្រាប់ថ្ងៃ ឬ ឈ្មោះដែលបានស្វែងរកទេ។
+          </div>
+        `;
+        return;
+      }
+
+      const desktopRows = data.map((item, index) => {
+        const safeName = escapeHtml(item.name || "-");
+        const safePassword = escapeHtml(item.password || "-");
+        const safeDate = escapeHtml(formatDisplayDate(item.createdDate));
+
+        return `
+          <tr>
+            <td>${index + 1}</td>
+            <td class="name-cell">${safeName}</td>
+            <td class="password-cell">${safePassword}</td>
+            <td class="link-cell">
+              ${
+                item.fbLink
+                  ? `<a class="link-btn" href="${item.fbLink}" target="_blank" rel="noopener noreferrer">Link</a>`
+                  : `<span style="color:#8fa4c8;">-</span>`
+              }
+            </td>
+            <td class="date-cell">
+              <span class="date-pill">${safeDate}</span>
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+      const mobileCards = data.map((item, index) => {
+        const safeName = escapeHtml(item.name || "-");
+        const safePassword = escapeHtml(item.password || "-");
+        const safeDate = escapeHtml(formatDisplayDate(item.createdDate));
+
+        return `
+          <div class="record-card">
+            <div class="record-top">
+              <div>
+                <div class="record-name">${safeName}</div>
+              </div>
+              <div class="record-index">${index + 1}</div>
+            </div>
+
+            <div class="record-grid">
+              <div class="mini-box">
+                <div class="mini-label">Password</div>
+                <div class="mini-value">${safePassword}</div>
+              </div>
+
+              <div class="mini-box">
+                <div class="mini-label">ថ្ងៃបង្កើត</div>
+                <div class="mini-value">${safeDate}</div>
+              </div>
+            </div>
+
+            <div class="record-actions">
+              <span class="date-pill">${safeDate}</span>
+              ${
+                item.fbLink
+                  ? `<a class="link-btn" href="${item.fbLink}" target="_blank" rel="noopener noreferrer">Link</a>`
+                  : `<span style="color:#8fa4c8;">-</span>`
+              }
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      tableContentEl.innerHTML = `
+        <div class="table-wrap">
+          <table>
+            <colgroup>
+              <col class="col-no">
+              <col class="col-name">
+              <col class="col-pass">
+              <col class="col-link">
+              <col class="col-date">
+            </colgroup>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>ឈ្មោះ</th>
+                <th>Password</th>
+                <th>Facebook Link</th>
+                <th>ថ្ងៃបង្កើត</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${desktopRows}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="mobile-cards">
+          ${mobileCards}
+        </div>
+      `;
+    }
+
+    function printReport() {
+      window.print();
+    }
+
+    dateFilterEl.addEventListener("change", applyFilters);
+    searchInputEl.addEventListener("input", applyFilters);
+
+    todayBtnEl.addEventListener("click", () => {
+      const today = getTodayLocal();
+      dateFilterEl.value = today;
+      selectedDateTextEl.textContent = "Today";
+      applyFilters();
+    });
+
+    resetBtnEl.addEventListener("click", () => {
+      dateFilterEl.value = "";
+      searchInputEl.value = "";
+      applyFilters();
+    });
+
+    printBtnEl.addEventListener("click", printReport);
+    printBtnTopEl.addEventListener("click", printReport);
+
+    loadSheetData();
+  </script>
+</body>
+</html>
